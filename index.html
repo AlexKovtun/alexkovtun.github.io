@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#FAF7F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1F4D43" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Thailand Trip">
+<meta name="format-detection" content="telephone=no">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
 <meta name="googlebot" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
@@ -30,10 +36,33 @@
     font-family: 'Inter', sans-serif;
     line-height: 1.5;
     padding: 48px 20px 100px;
+    /* iOS: keep text at the author's size and drop the grey tap flash */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(47, 111, 98, 0.12);
+  }
+
+  /* Clear the notch / Dynamic Island and the home indicator */
+  @supports (padding: max(0px)) {
+    body {
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+      padding-bottom: max(100px, calc(env(safe-area-inset-bottom) + 70px));
+    }
   }
 
   @media (max-width: 520px) {
-    body { padding: 32px 14px 70px; }
+    body { padding: 32px 16px 70px; }
+  }
+
+  @supports (padding: max(0px)) {
+    @media (max-width: 520px) {
+      body {
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+        padding-bottom: max(70px, calc(env(safe-area-inset-bottom) + 48px));
+      }
+    }
   }
 
   .doc {
@@ -144,6 +173,7 @@
   }
 
   .summary-text {
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 3px;
@@ -172,7 +202,7 @@
     .summary-icon { width: 32px; height: 32px; }
     .summary-icon svg { width: 15px; height: 15px; }
     .summary-title { font-size: 16.5px; }
-    .summary-subtitle { font-size: 11px; max-width: 150px; }
+    .summary-subtitle { font-size: 11.5px; }
     summary .count { font-size: 10.5px; }
     .details-body { padding: 4px 16px 18px; }
   }
@@ -609,6 +639,73 @@
     }
   }
 
+  /* --- Phone tuning (iPhone 14/15 family is 390-430px wide) --- */
+  @media (max-width: 430px) {
+    /* Dates were breaking mid-label: "Sun, Sep" / "27" */
+    .stay-date-point .value { white-space: nowrap; font-size: 13.5px; }
+    .stay-dates { gap: 8px; padding: 0 16px 16px; }
+    .nights-badge { padding: 5px 9px; font-size: 10.5px; }
+
+    .stay-top { padding: 16px 16px 14px; }
+    .stay-name { font-size: 17.5px; }
+    .stay-meta { padding: 12px 16px 16px; }
+
+    /* Apple asks for ~44px of touchable height; the text stays small. */
+    .stay-directions {
+      min-height: 44px;
+      align-items: center;
+      margin-top: 2px;
+    }
+
+    .map-jump { gap: 6px; }
+    .map-jump button {
+      min-height: 44px;
+      padding: 7px 14px;
+      flex: 1 1 auto;
+    }
+
+    .ticket-data { padding: 14px 16px 16px; }
+    .leg-note { padding: 0 16px 14px; }
+  }
+
+  /* Landscape on a phone: the notch eats one side, and height is scarce */
+  @media (max-height: 460px) and (orientation: landscape) {
+    body { padding-top: 24px; }
+    .doc-header { margin-bottom: 24px; padding-bottom: 18px; }
+    .map-frame-wrap iframe { height: 260px; }
+  }
+
+  .airport-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .airport-link svg {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+    color: var(--jade);
+    opacity: 0.75;
+  }
+
+  .airport-link:hover {
+    color: var(--jade);
+    border-bottom-color: var(--jade);
+  }
+
+  @media (max-width: 430px) {
+    .airport-link {
+      min-height: 32px;
+      margin-top: -6px;
+    }
+    .airport-link svg { width: 11px; height: 11px; }
+  }
+
 </style>
 </head>
 <body>
@@ -645,12 +742,12 @@
               <div class="route">
                 <div class="route-point">
                   <div class="city">Tel Aviv Yafo</div>
-                  <div class="airport">Ben Gurion</div>
+                  <div class="airport"><a class="airport-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/dir/?api=1&amp;destination=Ben%20Gurion%20Airport%2C%20Tel%20Aviv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Ben Gurion</a></div>
                 </div>
                 <div class="route-line"></div>
                 <div class="route-point">
                   <div class="city">Bangkok</div>
-                  <div class="airport">Suvarnabhumi</div>
+                  <div class="airport"><a class="airport-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/dir/?api=1&amp;destination=Suvarnabhumi%20Airport%2C%20Bangkok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Suvarnabhumi</a></div>
                 </div>
               </div>
             </div>
@@ -687,12 +784,12 @@
               <div class="route">
                 <div class="route-point">
                   <div class="city">Bangkok</div>
-                  <div class="airport">Suvarnabhumi</div>
+                  <div class="airport"><a class="airport-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/dir/?api=1&amp;destination=Suvarnabhumi%20Airport%2C%20Bangkok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Suvarnabhumi</a></div>
                 </div>
                 <div class="route-line"></div>
                 <div class="route-point">
                   <div class="city">Chiang Mai</div>
-                  <div class="airport"></div>
+                  <div class="airport"><a class="airport-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/dir/?api=1&amp;destination=Chiang%20Mai%20International%20Airport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Chiang Mai Intl</a></div>
                 </div>
               </div>
             </div>
@@ -728,12 +825,12 @@
               <div class="route">
                 <div class="route-point">
                   <div class="city">Chiang Mai</div>
-                  <div class="airport">CNX</div>
+                  <div class="airport"><a class="airport-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/dir/?api=1&amp;destination=Chiang%20Mai%20International%20Airport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Chiang Mai Intl</a></div>
                 </div>
                 <div class="route-line"></div>
                 <div class="route-point">
                   <div class="city">Krabi</div>
-                  <div class="airport">KBV</div>
+                  <div class="airport"><a class="airport-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/dir/?api=1&amp;destination=Krabi%20International%20Airport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Krabi Intl</a></div>
                 </div>
               </div>
             </div>
@@ -769,12 +866,12 @@
               <div class="route">
                 <div class="route-point">
                   <div class="city">Krabi</div>
-                  <div class="airport">Krabi Intl</div>
+                  <div class="airport"><a class="airport-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/dir/?api=1&amp;destination=Krabi%20International%20Airport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Krabi Intl</a></div>
                 </div>
                 <div class="route-line"></div>
                 <div class="route-point">
                   <div class="city">Bangkok</div>
-                  <div class="airport">Suvarnabhumi</div>
+                  <div class="airport"><a class="airport-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/dir/?api=1&amp;destination=Suvarnabhumi%20Airport%2C%20Bangkok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Suvarnabhumi</a></div>
                 </div>
               </div>
             </div>
@@ -810,12 +907,12 @@
               <div class="route">
                 <div class="route-point">
                   <div class="city">Bangkok</div>
-                  <div class="airport">Suvarnabhumi</div>
+                  <div class="airport"><a class="airport-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/dir/?api=1&amp;destination=Suvarnabhumi%20Airport%2C%20Bangkok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Suvarnabhumi</a></div>
                 </div>
                 <div class="route-line"></div>
                 <div class="route-point">
                   <div class="city">Tel Aviv Yafo</div>
-                  <div class="airport">Ben Gurion</div>
+                  <div class="airport"><a class="airport-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/dir/?api=1&amp;destination=Ben%20Gurion%20Airport%2C%20Tel%20Aviv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>Ben Gurion</a></div>
                 </div>
               </div>
             </div>
