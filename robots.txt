@@ -1,2 +1,5 @@
+# Crawling is allowed on purpose: the noindex meta tag in index.html is the
+# control that actually removes the page from results, and a crawler has to be
+# able to fetch the page to read it. Disallow would hide the tag.
 User-agent: *
-Disallow: /
+Allow: /

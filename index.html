@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#FAF7F0" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#1F4D43" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#1A1611" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Thailand Trip">
@@ -17,17 +17,20 @@
 <meta name="referrer" content="no-referrer">
 <title>Thailand Trip — Itinerary</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
+    color-scheme: light dark;
     --ink: #1B2A28;
     --paper: #FAF7F0;
     --sand: #EDE6D6;
     --jade: #2F6F62;
     --jade-deep: #1F4D43;
-    --gold: #C9A227;
+    --gold: #C9A227;    /* brand gold: decorative fills only */
+    --gold-ink: #856A14; /* gold when it has to be READ: 4.82 on paper */
     --line: #D8CFC0;
-    --muted: #6B7A76;
+    --muted: #5A6864;   /* 5.45 on paper, 4.69 on sand — AA */
   }
 
   * { box-sizing: border-box; }
@@ -48,6 +51,7 @@
   /* Clear the notch / Dynamic Island and the home indicator */
   @supports (padding: max(0px)) {
     body {
+      padding-top: max(48px, calc(env(safe-area-inset-top) + 16px));
       padding-left: max(20px, env(safe-area-inset-left));
       padding-right: max(20px, env(safe-area-inset-right));
       padding-bottom: max(100px, calc(env(safe-area-inset-bottom) + 70px));
@@ -61,6 +65,7 @@
   @supports (padding: max(0px)) {
     @media (max-width: 520px) {
       body {
+        padding-top: max(32px, calc(env(safe-area-inset-top) + 12px));
         padding-left: max(16px, env(safe-area-inset-left));
         padding-right: max(16px, env(safe-area-inset-right));
         padding-bottom: max(70px, calc(env(safe-area-inset-bottom) + 48px));
@@ -119,6 +124,7 @@
     justify-content: space-between;
     gap: 12px;
     color: var(--jade-deep);
+    -webkit-user-select: none;
     user-select: none;
   }
 
@@ -295,7 +301,7 @@
     font-family: 'IBM Plex Mono', monospace;
     font-size: 10px;
     font-weight: 600;
-    color: #fff;
+    color: var(--paper);
     background: var(--jade-deep);
     padding: 2px 7px;
     border-radius: 3px;
@@ -303,7 +309,7 @@
   }
 
   .stars {
-    color: var(--gold);
+    color: var(--gold-ink);
     font-size: 12px;
     letter-spacing: 1px;
   }
@@ -610,10 +616,6 @@
 
   .stay-card.is-today .stay-tags { margin-bottom: 6px; }
 
-  .stay-card.is-today .stay-name::after {
-    content: "";
-  }
-
   .stay-directions {
     display: inline-flex;
     align-items: center;
@@ -673,7 +675,7 @@
 
   /* Landscape on a phone: the notch eats one side, and height is scarce */
   @media (max-height: 460px) and (orientation: landscape) {
-    body { padding-top: 24px; }
+    body { padding-top: max(24px, calc(env(safe-area-inset-top) + 8px)); }
     .doc-header { margin-bottom: 24px; padding-bottom: 18px; }
     .map-frame-wrap iframe { height: 260px; }
   }
@@ -702,11 +704,196 @@
   }
 
   @media (max-width: 430px) {
-    .airport-link {
-      min-height: 32px;
-      margin-top: -6px;
-    }
     .airport-link svg { width: 11px; height: 11px; }
+  }
+
+  /* Airport code after each clock time: "23:30 TLV". Codes read faster than
+     UTC offsets, and without them the two long-hauls imply the wrong duration. */
+  .data-field .value .tz {
+    font-size: 10.5px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  .nextday {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--jade);
+  }
+
+  .ticket-extra {
+    font-size: 11px;
+    color: var(--muted);
+    padding: 0 20px 14px;
+    margin-top: -8px;
+  }
+
+  @media (max-width: 430px) {
+    .ticket-extra { padding: 0 16px 13px; }
+    .data-field .value .tz { font-size: 11px; }
+    /* most-tapped control at an airport; 32px was under the touch floor */
+    .airport-link { min-height: 44px; margin-top: -10px; }
+  }
+
+  /* ---------- Dark mode ----------
+     Read at night on a plane or in a hotel room. Not grey-on-black: a warm
+     near-black keeps the paper/boarding-pass character, and the jade ordering
+     inverts, so --jade-deep now means "stronger", not "darker". */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink:       #E7DECD;
+      --paper:     #1A1611;
+      --sand:      #262019;
+      --jade:      #69BFAC;
+      --jade-deep: #8FD6BE;
+      --gold:      #E0B44E;
+      --gold-ink:  #E0B44E;
+      --line:      rgba(231, 222, 205, 0.13);
+      --muted:     #A79D8E;
+    }
+
+    /* a 13%-opacity dark jade glow is invisible on a dark surface */
+    .ticket.is-today,
+    .stay-card.is-today {
+      box-shadow: 0 0 0 1px var(--jade), 0 2px 14px rgba(105, 191, 172, 0.16);
+    }
+
+    body { -webkit-tap-highlight-color: rgba(105, 191, 172, 0.18); }
+
+    /* the light gradient becomes a glaring mint block at night */
+    .stay-photo {
+      background: linear-gradient(135deg, #2A4A43 0%, #1D332F 100%);
+      color: var(--jade-deep);
+    }
+
+    /* Google's tiles stay light whatever we do; invert+hue-rotate swaps
+       water and land, so just take the edge off */
+    .map-frame-wrap iframe { filter: brightness(0.86) saturate(0.92); }
+
+    .stay-card, .ticket, details {
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+  }
+
+  /* An unselected chip sat on its own background colour, leaving a 1.24:1
+     border as the only thing marking it as a control. */
+  .map-jump button { border-color: var(--muted); }
+
+  :focus-visible {
+    outline: 2px solid var(--jade);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  summary:focus-visible { outline-offset: -3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+    }
+    details[open] summary .chevron { transform: rotate(180deg); }
+  }
+
+  /* Type floor for phone reading: tired, in glare, at a gate. */
+  @media (max-width: 430px) {
+    .today-pill      { font-size: 11px; letter-spacing: 0.05em; }
+    .genius-badge    { font-size: 11px; }
+    .stay-date-point .label,
+    .stay-meta .label,
+    .data-field .label { font-size: 11.5px; font-weight: 500; }
+    summary .count       { font-size: 11.5px; }
+    .nights-badge        { font-size: 11.5px; }
+    .summary-subtitle    { font-size: 12.5px; }
+    .stay-date-point .time { font-size: 12px; }
+    .stay-directions     { font-size: 13.5px; }
+    .route-point .airport { font-size: 13px; }
+    .airport-link svg    { width: 12px; height: 12px; opacity: 0.85; }
+    .stay-location       { font-size: 13px; }
+    .doc-header p        { font-size: 14px; }
+    .map-jump button     { font-size: 14px; }
+    .stay-meta .value    { font-size: 14px; }
+    .stay-date-point .value {
+      font-size: 14.5px;
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
+    }
+    .data-field .value   { font-size: 15.5px; }
+    .date-label .day     { font-size: 15.5px; }
+  }
+
+  .map-load {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
+    min-height: 120px;
+    padding: 24px 16px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--jade-deep);
+  }
+
+  .map-load span {
+    font-size: 11.5px;
+    font-weight: 400;
+    color: var(--muted);
+  }
+
+  .map-offline {
+    margin: 10px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .map-offline a { color: var(--jade); }
+
+  /* On touch, :hover latches after a tap and competes with .active */
+  @media (hover: hover) and (pointer: fine) {
+    .map-jump button:hover { border-color: var(--jade); }
+    .stay-directions:hover { border-bottom-color: var(--jade); }
+    .airport-link:hover { color: var(--jade); border-bottom-color: var(--jade); }
+  }
+
+  @media (max-width: 430px) {
+    .map-offline { font-size: 13px; }
+    /* padding, not negative margin: the hit area must not overlap the city name */
+    .airport-link { min-height: 44px; margin-top: 0; padding-top: 2px; }
+  }
+
+  .stay-gap {
+    border: 1px dashed var(--line);
+    border-radius: 6px;
+    padding: 14px 20px;
+    margin-bottom: 14px;
+    background: none;
+  }
+
+  .stay-gap-head {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .stay-gap-body {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  @media (max-width: 430px) {
+    .stay-gap { padding: 14px 16px; }
+    .stay-gap-body { font-size: 13px; }
   }
 
 </style>
@@ -716,7 +903,7 @@
 <div class="doc">
   <div class="doc-header">
     <h1>Thailand Trip</h1>
-    <p>Chiang Mai &amp; the Andaman coast — late September to mid October</p>
+    <p>Chiang Mai &amp; the Andaman coast — Sep 26 to Oct 16, 2026 · 2 adults</p>
   </div>
 
   <section>
@@ -762,19 +949,18 @@
               </div>
               <div class="data-field">
                 <div class="label">Departure</div>
-                <div class="value">23:30</div>
+                <div class="value">23:30 <span class="tz">TLV</span></div>
               </div>
               <div class="data-field">
                 <div class="label">Arrival</div>
-                <div class="value">15:10 <span style="color: var(--muted); font-weight:400;">+1d</span></div>
+                <div class="value">15:10 <span class="tz">BKK</span> <span class="nextday">+1d</span></div>
               </div>
               <div class="data-field">
-                <div class="label">Last check-in</div>
-                <div class="value dash">—</div>
+                <div class="label">Duration</div>
+                <div class="value">11h 40m</div>
               </div>
             </div>
           </div>
-          <div class="leg-note">Date inferred from the connecting Chiang Mai flight — flag it if this is off.</div>
         </div>
 
         <div class="date-group" data-date="2026-09-27">
@@ -804,17 +990,18 @@
               </div>
               <div class="data-field">
                 <div class="label">Departure</div>
-                <div class="value">19:00</div>
+                <div class="value">19:00 <span class="tz">BKK</span></div>
               </div>
               <div class="data-field">
                 <div class="label">Arrival</div>
-                <div class="value">20:25</div>
+                <div class="value">20:25 <span class="tz">CNX</span></div>
               </div>
               <div class="data-field">
-                <div class="label">Fare</div>
-                <div class="value">Deluxe</div>
+                <div class="label">Duration</div>
+                <div class="value">1h 25m</div>
               </div>
             </div>
+            <div class="ticket-extra">Fare · Deluxe</div>
           </div>
         </div>
 
@@ -841,15 +1028,15 @@
             <div class="ticket-data">
               <div class="data-field">
                 <div class="label">Flight</div>
-                <div class="value flight-code">FD 3070 </div>
+                <div class="value flight-code">FD 3070</div>
               </div>
               <div class="data-field">
                 <div class="label">Departure</div>
-                <div class="value">06:35</div>
+                <div class="value">06:35 <span class="tz">CNX</span></div>
               </div>
               <div class="data-field">
                 <div class="label">Arrival</div>
-                <div class="value">08:30</div>
+                <div class="value">08:30 <span class="tz">KBV</span></div>
               </div>
               <div class="data-field">
                 <div class="label">Duration</div>
@@ -886,17 +1073,18 @@
               </div>
               <div class="data-field">
                 <div class="label">Departure</div>
-                <div class="value">10:00</div>
+                <div class="value">10:00 <span class="tz">KBV</span></div>
               </div>
               <div class="data-field">
                 <div class="label">Arrival</div>
-                <div class="value">11:25</div>
+                <div class="value">11:25 <span class="tz">BKK</span></div>
               </div>
               <div class="data-field">
-                <div class="label">Fare</div>
-                <div class="value">Economy Promo</div>
+                <div class="label">Duration</div>
+                <div class="value">1h 25m</div>
               </div>
             </div>
+            <div class="ticket-extra">Fare · Economy Promo</div>
           </div>
         </div>
 
@@ -927,17 +1115,18 @@
               </div>
               <div class="data-field">
                 <div class="label">Departure</div>
-                <div class="value">23:55</div>
+                <div class="value">23:55 <span class="tz">BKK</span></div>
               </div>
               <div class="data-field">
                 <div class="label">Arrival</div>
-                <div class="value">06:45 <span style="color: var(--muted); font-weight:400;">+1d</span></div>
+                <div class="value">06:45 <span class="tz">TLV</span> <span class="nextday">+1d</span></div>
               </div>
               <div class="data-field">
-                <div class="label">Terminal</div>
-                <div class="value">3</div>
+                <div class="label">Duration</div>
+                <div class="value">10h 50m</div>
               </div>
             </div>
+            <div class="ticket-extra">Terminal 3</div>
           </div>
         </div>
 
@@ -954,7 +1143,7 @@
           </span>
           <span class="summary-text">
             <span class="summary-title">Hotels<span class="count">2</span></span>
-            <span class="summary-subtitle">Chiang Mai · Bangkok · 6 nights</span>
+            <span class="summary-subtitle">6 of 19 nights booked · Krabi open</span>
           </span>
         </span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -1000,6 +1189,11 @@
               <div class="value">2 adults</div>
             </div>
           </div>
+        </div>
+
+        <div class="stay-gap">
+          <div class="stay-gap-head">Krabi · 13 nights</div>
+          <div class="stay-gap-body">Thu Oct 1 – Wed Oct 14 · nothing booked on this page</div>
         </div>
 
         <div class="stay-card" data-start="2026-10-14" data-end="2026-10-16">
@@ -1063,9 +1257,17 @@
           <button type="button" onclick="jumpMap(this, 8.0863, 98.9063, 12)">Krabi</button>
           <button type="button" onclick="jumpMap(this, 13.7563, 100.5018, 11)">Bangkok</button>
         </div>
-        <div class="map-frame-wrap">
-          <iframe id="tripMap" src="https://www.google.com/maps/d/embed?mid=1yXvLKT7lOvJzgIHArH0gxs0HyPel4kE&ehbc=2E312F&ll=18.7883,98.9853&z=12" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div class="map-frame-wrap" id="mapWrap" data-src="https://www.google.com/maps/d/embed?mid=1yXvLKT7lOvJzgIHArH0gxs0HyPel4kE&ehbc=2E312F">
+          <button type="button" class="map-load" id="mapLoad">
+            Show map
+            <span>loads ~1 MB from Google</span>
+          </button>
         </div>
+        <p class="map-offline">Works offline: open the city in the Maps app instead —
+          <a target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&amp;query=18.7883,98.9853">Chiang Mai</a>,
+          <a target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&amp;query=8.0863,98.9063">Krabi</a>,
+          <a target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/search/?api=1&amp;query=13.7563,100.5018">Bangkok</a>.
+        </p>
       </div>
     </details>
   </section>
@@ -1117,11 +1319,37 @@
     });
   })();
 
+  // The embed is ~1 MB and used to be fetched on every page open even with the
+  // section collapsed: loading="lazy" does not defer iframes. Load it on request.
+  var mapWrap = document.getElementById('mapWrap');
+  var mapLL = '18.7883,98.9853';
+  var mapZ = 12;
+
+  function renderMap() {
+    var f = mapWrap.querySelector('iframe');
+    if (!f) {
+      f = document.createElement('iframe');
+      f.id = 'tripMap';
+      f.referrerPolicy = 'no-referrer-when-downgrade';
+      mapWrap.replaceChildren(f);
+    }
+    f.src = mapWrap.dataset.src + '&ll=' + mapLL + '&z=' + mapZ;
+  }
+
+  document.getElementById('mapLoad').addEventListener('click', renderMap);
+
   function jumpMap(btn, lat, lng, zoom) {
-    document.getElementById('tripMap').src =
-      'https://www.google.com/maps/d/embed?mid=1yXvLKT7lOvJzgIHArH0gxs0HyPel4kE&ehbc=2E312F&ll=' + lat + ',' + lng + '&z=' + zoom;
+    mapLL = lat + ',' + lng;
+    mapZ = zoom;
     document.querySelectorAll('.map-jump button').forEach(function(b) { b.classList.remove('active'); });
     btn.classList.add('active');
+    if (mapWrap.querySelector('iframe')) renderMap();
+  }
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
   }
 </script>
 
