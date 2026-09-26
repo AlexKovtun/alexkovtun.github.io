@@ -502,7 +502,7 @@
   }
 
   .route-line::after {
-    content: '✈';
+    content: '\2708\FE0E';
     position: absolute;
     top: -9px;
     right: -3px;
@@ -515,42 +515,7 @@
     margin: 0 20px;
   }
 
-  .ticket-data {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 4px;
-    padding: 14px 20px 18px;
-  }
-
-  .data-field .label {
-    font-size: 10.5px;
-    letter-spacing: 0.02em;
-    color: var(--muted);
-    margin-bottom: 4px;
-  }
-
-  .data-field .value {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 14.5px;
-    font-weight: 500;
-    color: var(--ink);
-  }
-
-  .data-field .value.flight-code {
-    color: var(--jade-deep);
-    font-weight: 600;
-  }
-
-  .data-field .value.dash {
-    color: var(--muted);
-    font-weight: 400;
-  }
-
   @media (max-width: 520px) {
-    .ticket-data {
-      grid-template-columns: repeat(2, 1fr);
-      row-gap: 14px;
-    }
     .route {
       flex-direction: row;
       align-items: flex-start;
@@ -675,7 +640,6 @@
       flex: 1 1 auto;
     }
 
-    .ticket-data { padding: 14px 16px 16px; }
     .leg-note { padding: 0 16px 14px; }
   }
 
@@ -715,13 +679,6 @@
 
   /* Airport code after each clock time: "23:30 TLV". Codes read faster than
      UTC offsets, and without them the two long-hauls imply the wrong duration. */
-  .data-field .value .tz {
-    font-size: 10.5px;
-    font-weight: 500;
-    color: var(--muted);
-    letter-spacing: 0.02em;
-  }
-
   .nextday {
     font-size: 11px;
     font-weight: 500;
@@ -737,7 +694,6 @@
 
   @media (max-width: 430px) {
     .ticket-extra { padding: 0 16px 13px; }
-    .data-field .value .tz { font-size: 11px; }
     /* most-tapped control at an airport; 32px was under the touch floor */
     .airport-link { min-height: 44px; margin-top: -10px; }
   }
@@ -810,7 +766,6 @@
     .genius-badge    { font-size: 11px; }
     .stay-date-point .label,
     .stay-meta .label,
-    .data-field .label { font-size: 11.5px; font-weight: 500; }
     summary .count       { font-size: 11.5px; }
     .nights-badge        { font-size: 11.5px; }
     .summary-subtitle    { font-size: 12.5px; }
@@ -827,7 +782,6 @@
       letter-spacing: -0.01em;
       font-variant-numeric: tabular-nums;
     }
-    .data-field .value   { font-size: 15.5px; }
     .date-label .day     { font-size: 15.5px; }
   }
 
@@ -1007,6 +961,56 @@
     .route-point .city { font-size: 16.5px; line-height: 1.2; }
   }
 
+  .tt-label {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0.8;
+    margin-bottom: 2px;
+  }
+
+  .tt-time { font-size: 24px; letter-spacing: -0.02em; }
+
+  .tt-track {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    color: var(--jade);
+  }
+
+  .tt-rail {
+    flex: 1 1 auto;
+    height: 0;
+    border-top: 1px dashed var(--line);
+  }
+
+  .tt-plane {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+    transform: rotate(90deg);
+  }
+
+  /* arrival lands on a different calendar day — say which, rather than "+1d" */
+  .tt-next {
+    display: block;
+    margin-top: 2px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--jade);
+  }
+
+  @media (max-width: 430px) {
+    .tt-time { font-size: 27px; }
+    .tt-label { font-size: 10.5px; }
+    .tt-next { font-size: 12px; }
+    .tt-plane { width: 14px; height: 14px; }
+  }
+
 </style>
 </head>
 <body>
@@ -1061,12 +1065,12 @@
               </div>
               <div class="tt-mid">
                 <div class="tt-dur">11h 40m</div>
-                <div class="tt-line"></div>
+                <div class="tt-track"><span class="tt-rail"></span><svg class="tt-plane" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-3 2v1.5l4.5-1.5 4.5 1.5V21l-3-2v-5.5z"/></svg><span class="tt-rail"></span></div>
               </div>
               <div class="tt-point tt-arr">
                 <div class="tt-label">Arrives</div>
-                <div class="tt-time">15:10<span class="nextday">+1d</span></div>
-                <div class="tt-code">BKK</div>
+                <div class="tt-time">15:10</div>
+                <div class="tt-code">BKK<span class="tt-next">Sun 27</span></div>
               </div>
             </div>
             <div class="ticket-foot">
@@ -1104,7 +1108,7 @@
               </div>
               <div class="tt-mid">
                 <div class="tt-dur">1h 25m</div>
-                <div class="tt-line"></div>
+                <div class="tt-track"><span class="tt-rail"></span><svg class="tt-plane" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-3 2v1.5l4.5-1.5 4.5 1.5V21l-3-2v-5.5z"/></svg><span class="tt-rail"></span></div>
               </div>
               <div class="tt-point tt-arr">
                 <div class="tt-label">Arrives</div>
@@ -1147,7 +1151,7 @@
               </div>
               <div class="tt-mid">
                 <div class="tt-dur">1h 55m</div>
-                <div class="tt-line"></div>
+                <div class="tt-track"><span class="tt-rail"></span><svg class="tt-plane" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-3 2v1.5l4.5-1.5 4.5 1.5V21l-3-2v-5.5z"/></svg><span class="tt-rail"></span></div>
               </div>
               <div class="tt-point tt-arr">
                 <div class="tt-label">Arrives</div>
@@ -1190,7 +1194,7 @@
               </div>
               <div class="tt-mid">
                 <div class="tt-dur">1h 25m</div>
-                <div class="tt-line"></div>
+                <div class="tt-track"><span class="tt-rail"></span><svg class="tt-plane" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-3 2v1.5l4.5-1.5 4.5 1.5V21l-3-2v-5.5z"/></svg><span class="tt-rail"></span></div>
               </div>
               <div class="tt-point tt-arr">
                 <div class="tt-label">Arrives</div>
@@ -1233,12 +1237,12 @@
               </div>
               <div class="tt-mid">
                 <div class="tt-dur">10h 50m</div>
-                <div class="tt-line"></div>
+                <div class="tt-track"><span class="tt-rail"></span><svg class="tt-plane" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-3 2v1.5l4.5-1.5 4.5 1.5V21l-3-2v-5.5z"/></svg><span class="tt-rail"></span></div>
               </div>
               <div class="tt-point tt-arr">
                 <div class="tt-label">Arrives</div>
-                <div class="tt-time">06:45<span class="nextday">+1d</span></div>
-                <div class="tt-code">TLV</div>
+                <div class="tt-time">06:45</div>
+                <div class="tt-code">TLV<span class="tt-next">Fri 16</span></div>
               </div>
             </div>
             <div class="ticket-foot">

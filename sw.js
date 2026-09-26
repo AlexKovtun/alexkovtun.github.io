@@ -1,6 +1,6 @@
 // Offline cache for the itinerary. The point is a page that opens on a plane,
 // in airplane mode, or before a SIM is bought.
-const V = 'trip-v1';
+const V = 'trip-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -28,8 +28,24 @@ self.addEventListener('fetch', e => {
   // naturally offline rather than caching something useless.
   if (new URL(req.url).origin !== location.origin) return;
 
-  // Cache-first: an itinerary should open instantly with no network. The cost is
-  // that a freshly pushed edit appears on the second open, not the first.
+  // The page itself is network-first: online you always get the current
+  // itinerary, offline you get the last one that loaded. Cache-first on the
+  // document meant a pushed edit only appeared on the second open.
+  if (req.mode === 'navigate' || (req.destination === 'document')) {
+    e.respondWith(
+      fetch(req).then(res => {
+        if (res && res.ok) {
+          const copy = res.clone();
+          caches.open(V).then(c => c.put(req, copy));
+        }
+        return res;
+      }).catch(() => caches.match(req, { ignoreSearch: true })
+        .then(hit => hit || caches.match('./index.html')))
+    );
+    return;
+  }
+
+  // Everything else (icons, manifest) is cache-first and refreshed behind you.
   e.respondWith(
     caches.match(req, { ignoreSearch: true }).then(hit => {
       const net = fetch(req).then(res => {
