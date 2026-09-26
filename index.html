@@ -333,7 +333,7 @@
 
   .stay-meta {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 14px;
     padding: 14px 20px 18px;
     border-top: 1px dashed var(--line);
@@ -579,6 +579,34 @@
 
   .stay-card.is-today .stay-name::after {
     content: "";
+  }
+
+  .stay-directions {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 7px;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--jade);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s ease;
+  }
+
+  .stay-directions svg {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+  }
+
+  .stay-directions:hover { border-bottom-color: var(--jade); }
+
+  @media (max-width: 520px) {
+    .stay-directions {
+      margin-top: 9px;
+      font-size: 12.5px;
+    }
   }
 
 </style>
@@ -842,7 +870,11 @@
                 <span class="stars">★★★★</span>
               </div>
               <div class="stay-name">Wannamas Chiangmai Boutique House</div>
-              <div class="stay-location">Samlarn Road, Soi 1, Phra Sing, Chiang Mai 50200</div>
+              <div class="stay-location">Phra Sing, Chiang Mai</div>
+              <a class="stay-directions" target="_blank" rel="noopener noreferrer"
+                 href="https://www.google.com/maps/dir/?api=1&amp;destination=Wannamas%20Chiangmai%20Boutique%20House%2C%20Soi%201%20Samlarn%20Road%2C%20Chiang%20Mai%2050200">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><span>Directions</span>
+              </a>
             </div>
           </div>
           <div class="stay-dates">
@@ -867,10 +899,6 @@
               <div class="label">Guests</div>
               <div class="value">2 adults</div>
             </div>
-            <div>
-              <div class="label">Booked under</div>
-              <div class="value">Alexander Kovtun</div>
-            </div>
           </div>
         </div>
 
@@ -879,7 +907,11 @@
             <div class="stay-photo">GA</div>
             <div class="stay-info">
               <div class="stay-name">Gardina Asoke Hotel &amp; Residence</div>
-              <div class="stay-location">No. 51 Soi Sukhumvit 16 (Sammitr), Sukhumvit Rd., Khlong Toei, Bangkok 10110</div>
+              <div class="stay-location">Sukhumvit 16, Khlong Toei, Bangkok</div>
+              <a class="stay-directions" target="_blank" rel="noopener noreferrer"
+                 href="https://www.google.com/maps/dir/?api=1&amp;destination=Gardina%20Asoke%20Hotel%20%26%20Residence%2C%20Soi%20Sukhumvit%2016%2C%20Bangkok%2010110">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><span>Directions</span>
+              </a>
             </div>
           </div>
           <div class="stay-dates">
@@ -903,10 +935,6 @@
             <div>
               <div class="label">Guests</div>
               <div class="value">2 adults</div>
-            </div>
-            <div>
-              <div class="label">Booked under</div>
-              <div class="value">Alexander Kovtun</div>
             </div>
           </div>
         </div>
